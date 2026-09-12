@@ -11,7 +11,7 @@ Refer to the [original repository](https://github.com/pythops/jetson-image) for 
 
 ## Spec
 
-**Supported Ubuntu releases**: 20.04
+**Supported Ubuntu releases**: 20.04  
 **L4T versions**: 32.x
 
 ## Build the jetson image
