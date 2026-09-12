@@ -23,7 +23,7 @@ function usage() {
     exit 1
 }
 
-while getopts b:r:d:h opts; do
+while getopts b:r:h opts; do
     case "$opts" in
 
     b)
