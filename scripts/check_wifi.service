@@ -1,0 +1,18 @@
+[Unit]
+Description=Reconnect to WiFi after signal loss
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /usr/local/bin/check_wifi.sh
+RemainAfterExit=yes
+Restart=always
+RestartSec=60s
+Sysloglevel=2
+LogLevelMax=2
+StandardOutput=null
+StandardError=null
+
+[Install]
+WantedBy=multi-user.target
