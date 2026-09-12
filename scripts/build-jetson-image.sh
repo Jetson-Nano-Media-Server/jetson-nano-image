@@ -1,32 +1,31 @@
 #!/usr/bin/env bash
 
-# Author Badr @pythops
+# Authors: Badr @pythops, Milan @milantodorovic
 
 set -e
 
-supported_boards=("jetson-nano" "jetson-nano-2gb" "jetson-orin-nano" "jetson-agx-xavier" "jetson-xavier-nx" "jetson-agx-orin")
+CPU_CORES=$(nproc)
+l4t=32
+
+supported_boards=("jetson-nano" "jetson-nano-2gb")
 
 function usage() {
-    echo "Usage: $0 -b <board> -r <revision> -d <device> -l <l4t>"
+    echo "Usage: $0 -b <board> -r <revision> -d <device>"
     echo ""
     echo "board: the board name, one of the following names:"
     for supported_board in "${supported_boards[@]}"; do
         echo "    ${supported_board}"
     done
     echo ""
-    echo "revision: the revision number. Only required for jetson-nano board. The possible values are: 100, 200 or 300."
+    echo "revision: the revision number. The possible values are: 100, 200 or 300."
     echo ""
-    echo "device: the rootfs device SD/USB. Only required for the following boards:"
-    echo "    - jetson-orin-nano"
-    echo "    - jetson-agx-orin"
-    echo "    - jetson-agx-xavier"
-    echo "    - jetson-xavier-nx"
+    echo "device: B01"
     echo ""
-    echo "l4t version. The possible values are: 32, 35, 36"
+    echo "l4t version. The possible value is: 32"
     exit 1
 }
 
-while getopts b:r:d:l:h opts; do
+while getopts b:r:d:h opts; do
     case "$opts" in
 
     b)
@@ -47,15 +46,6 @@ while getopts b:r:d:l:h opts; do
 
     d)
         device=${OPTARG}
-        ;;
-
-    l)
-        l4t=${OPTARG}
-        if [[ "$l4t" != 32 && "$l4t" != 35 && "$l4t" != 36 ]]; then
-            printf "\e[31mError: Unsupported l4t value: %s \n\e[0m" "$l4t"
-            echo "The possible values are: 32, 35, 36."
-            exit 1
-        fi
         ;;
 
     h)
@@ -79,54 +69,6 @@ case $board in
         exit 1
     fi
     ;;
-
-"jetson-orin-nano" | "jetson-xavier-nx" | "jetson-agx-xavier" | "jetson-agx-orin")
-
-    if [ "$device" = "" ]; then
-        printf "\e[31mError: device argument required.\n\e[0m"
-        usage
-    fi
-
-    if [[ "$device" != "SD" && "$device" != "USB" ]]; then
-        printf "\e[31mError: Unknown device.\n\e[0m"
-        echo "device must be SD or USB"
-        exit 1
-    fi
-    ;;
-
-*) ;;
-esac
-
-case $board in
-"jetson-nano" | "jetson-nano-2gb")
-    l4t=32
-    ;;
-
-"jetson-agx-xavier" | "jetson-xavier-nx")
-    if [[ "$l4t" == "" ]]; then
-        echo "Error: l4t version not provided."
-        echo "l4t must be 32 or 35"
-        exit 1
-    fi
-    if [[ "$l4t" != 32 && "$l4t" != 35 ]]; then
-        echo "The $board only supports 32.x or 35.x versions."
-        exit 1
-    fi
-    ;;
-
-"jetson-orin-nano" | "jetson-agx-orin")
-    if [[ "$l4t" == "" ]]; then
-        echo "Error: l4t version not provided."
-        echo "l4t must be 35 or 36"
-        exit 1
-    fi
-
-    if [[ "$l4t" != 35 && "$l4t" != 36 ]]; then
-        echo "The $board only supports 35.x or 36.x versions."
-        exit 1
-    fi
-
-    ;;
 *) ;;
 esac
 
@@ -138,14 +80,13 @@ if [[ -f "l4t_packages.txt" ]]; then
             L4T_PACKAGES+=" $line"
         fi
     done <"l4t_packages.txt"
-
 fi
 
 L4T_PACKAGES="${L4T_PACKAGES# }"
 
 sudo -E XDG_RUNTIME_DIR= DBUS_SESSION_BUS_ADDRESS= podman build \
     --cap-add=all \
-    --jobs=4 \
+    --jobs=$CPU_CORES \
     --network=host \
     --build-arg L4T_PACKAGES="$L4T_PACKAGES" \
     -f Containerfile.image.l4t"$l4t" \
