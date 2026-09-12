@@ -1,6 +1,6 @@
 FROM ubuntu:focal
 
-LABEL org.opencontainers.image.authors="Badr @pythops"
+LABEL org.opencontainers.image.authors="Badr @pythops, Milan @milantodorovic"
 
 ENV TZ=Etc/UTC \
     DEBIAN_FRONTEND=noninteractive
@@ -96,6 +96,17 @@ RUN apt install -y \
 # Configure Docker file with Nvidia's parameters
 RUN nvidia-ctk runtime configure --runtime=docker
 
+# Nvidias accelerated Gstreamer for video conversion
+RUN apt-get install -y \
+        gstreamer1.0-tools \
+        gstreamer1.0-alsa \
+        gstreamer1.0-plugins-base \
+        gstreamer1.0-plugins-base-apps \
+        gstreamer1.0-plugins-good \
+        gstreamer1.0-plugins-bad \
+        gstreamer1.0-plugins-ugly \
+        gstreamer1.0-libav
+
 RUN wget -q https://github.com/pythops/tegratop/releases/latest/download/tegratop-linux-arm64 -O /usr/local/bin/tegratop && \
     chmod +x /usr/local/bin/tegratop
 
@@ -109,8 +120,14 @@ RUN locale-gen en_US.UTF-8
 # Network configuration
 COPY config/netcfg.yaml /etc/netplan/netcfg.yaml
 
+# Seems to loose wifi from time to time, this reconnects automatically and logs the incident
+COPY config/check_wifi.sh /usr/local/bin
+COPY config/check_wifi.service /lib/systemd/system
+COPY config/wifi_check_log.txt /home/jetson/wifi_check_log.txt
+
 # Enable services at startuo
 RUN systemctl enable resizerootfs.service && \
+    systemctl enable check_wifi.service && \
     systemctl enable systemd-timesyncd
 
 # New user
