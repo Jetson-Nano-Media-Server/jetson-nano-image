@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 
-# Author Badr @pythops
+# Authors: Badr @pythops, Milan @milantodorovic
 
 set -e
 
 echo "Building base rootfs"
 
-if [ "$1" != "24.04" ] && [ "$1" != "23.04" ] && [ "$1" != "22.04" ] && [ "$1" != "21.04" ] && [ "$1" != "20.04" ]; then
+CPU_CORES=$(nproc)
+
+if [ "$1" != "20.04" ]; then
   echo "Error: Unknow version of ubuntu. The supported versions are: 20.04, 21.04, 22.04, 23.04, 24.04"
   exit 1
 fi
@@ -15,53 +17,12 @@ case $1 in
 "20.04")
   podman build \
     --squash-all \
-    --jobs=4 \
+    --jobs=$CPU_CORES \
     --arch=arm64 \
     --network=host \
     -f Containerfile.rootfs.20_04 \
     -t jetson-rootfs
   ;;
-
-"21.04")
-  podman build \
-    --squash-all \
-    --jobs=4 \
-    --arch=arm64 \
-    --network=host \
-    -f Containerfile.rootfs.21_04 \
-    -t jetson-rootfs
-  ;;
-
-"22.04")
-  podman build \
-    --squash-all \
-    --jobs=4 \
-    --arch=arm64 \
-    --network=host \
-    -f Containerfile.rootfs.22_04 \
-    -t jetson-rootfs
-  ;;
-
-"23.04")
-  podman build \
-    --squash-all \
-    --jobs=4 \
-    --arch=arm64 \
-    --network=host \
-    -f Containerfile.rootfs.23_04 \
-    -t jetson-rootfs
-  ;;
-
-"24.04")
-  podman build \
-    --squash-all \
-    --jobs=4 \
-    --arch=arm64 \
-    --network=host \
-    -f Containerfile.rootfs.24_04 \
-    -t jetson-rootfs
-  ;;
-
 *)
   exit 1
   ;;
