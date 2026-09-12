@@ -1,8 +1,8 @@
 # Nvidia Jetson Minimalist Images
 
-!!! DISCLAIMER !!!  
-This repository is for personal use. It removes all options except Ubuntu 20.04 for Jetson Nano 2/4GB.
-Refer to the [original repository](https://github.com/pythops/jetson-image) for other models and more updates.
+> [!WARNING]
+> This repository is for personal use. It removes all options except Ubuntu 20.04 for Jetson Nano 2/4GB.
+> Refer to the [original repository](https://github.com/pythops/jetson-image) for other models and more updates.
 
 ## Supported boards
 
