@@ -1,33 +1,18 @@
 # Nvidia Jetson Minimalist Images
 
-[![Discord][discord-badge]][chat-url]
-
-[discord-badge]: https://img.shields.io/badge/Discord-chat-5865F2?style=for-the-badge&logo=discord
-[chat-url]: https://discord.gg/mfSRc9Jann
-
-## Motivation
-
-The need for the minimalist images came from the official jetson images being large in size and containing pre-installed packages that are not necessary, resulting in the consumption of valuable disk space and memory.
+!!! DISCLAIMER !!!  
+This repository is for personal use. It removes all options except Ubuntu 20.04 for Jetson Nano 2/4GB.
+Refer to the [original repository](https://github.com/pythops/jetson-image) for other models and more updates.
 
 ## Supported boards
 
 - [x] Jetson nano
 - [x] Jetson nano 2gb
-- [x] Jetson orin nano
-- [x] Jetson agx orin
-- [x] Jetso agx xavier
-- [x] Jetson xavier nx
 
 ## Spec
 
-**Supported Ubuntu releases**: 20.04,  22.04, 24.04  
-**Work in progress**: 21.04, 23.04  
-**L4T versions**: 32.x, 35.x, 36.x
-
-> [!IMPORTANT]
-> For jetson orin nano, you might need to update the firmware before being able to use an image based on l4t 36.x
->
-> check this [link](https://www.jetson-ai-lab.com/initial_setup_jon.html) for more information.
+**Supported Ubuntu releases**: 20.04
+**L4T versions**: 32.x
 
 ## Build the jetson image
 
@@ -44,19 +29,14 @@ Building the jetson image is fairly easy. All you need to have is the following 
 Start by cloning the repo from github
 
 ```bash
-git clone https://github.com/pythops/jetson-image
+git clone --depth=1 https://github.com/pythops/jetson-image # or in this case https://github.com/MilanTodorovic/jetson-image
 cd jetson-image
 ```
 
-Then create a new rootfs with the desired ubuntu version.
-
-> [!NOTE]
-> Only the orin family boards can use ubuntu 24.04
-
-For ubuntu 24.04
+Then create a new rootfs with Ubuntu 20.04:
 
 ```
-just build-jetson-rootfs 24.04
+just build-jetson-rootfs 20.04
 ```
 
 This will create the rootfs in the `rootfs` directory.
@@ -67,17 +47,17 @@ This will create the rootfs in the `rootfs` directory.
 Next, use the following command to build the Jetson image:
 
 ```
-$ just build-jetson-image -b <board> -r <revision> -d <device> -l <l4t version>
+$ just build-jetson-image -b <board> -r <revision> -d <device>
 ```
 
 > [!TIP]
 > If you wish to add some specific nvidia packages that are present in the `common` section from [this link](https://repo.download.nvidia.com/jetson/)
 > such as `libcudnn8` for instance, then edit the file`l4t_packages.txt` in the root directory, add list each package name on separate line.
 
-For example, to build an image for `jetson-orin-nano` board:
+For example, to build an image for `jetson-nano` board:
 
 ```bash
-$ just build-jetson-image -b jetson-orin-nano -d SD -l 36
+$ just build-jetson-image -b jetson-nano -d SD -l 32
 ```
 
 Run with `-h` for more information
@@ -91,7 +71,7 @@ just build-jetson-image -h
 >
 > Check this [link](https://developer.nvidia.com/embedded/jetson-linux-archive) for more information.
 
-The Jetson image will be built and saved in the current directory in a file named `jetson.img`
+The Jetson image will be built and saved in the current directory in a file named `jetson_nano_ubuntu20.img`
 
 ## Flashing the image into your board
 
