@@ -42,10 +42,6 @@ while getopts b:r:h opts; do
         revision=${OPTARG}
         ;;
 
-    d)
-        device=${OPTARG}
-        ;;
-
     h)
         usage
         ;;
