@@ -19,4 +19,4 @@ clean:
     rm -rf base rootfs
     podman rmi -a -f
     sudo podman rmi -a -f
-    sudo rm -rf jetson.img
+    sudo rm -rf jetson_nano_ubuntu20.img
