@@ -13,7 +13,7 @@ build-jetson-image *args="":
     -@scripts/build-jetson-image.sh {{ args }}
 
 flash-jetson-image Jetson-image device:
-    @scripts/flash-jetson-image.sh {{ Jetson-image }} {{ device }}
+    @scripts/flash-jetson-image.sh {{ Jetson-image }}
 
 clean:
     rm -rf base rootfs
