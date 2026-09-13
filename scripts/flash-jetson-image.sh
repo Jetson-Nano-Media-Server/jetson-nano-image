@@ -14,7 +14,7 @@ fi
 
 # Check the arguments
 if [ "$#" -ne 2 ]; then
-  echo "flash-image.sh </path/to/jetson.img> </path/to/sdcard>"
+  echo "flash-image.sh </path/to/jetson.img> </path/to/drive>"
   echo "example: ./flash-image.sh /tmp/jetson.img /dev/mmcblk0"
   exit 1
 fi
