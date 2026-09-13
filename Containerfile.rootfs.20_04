@@ -86,12 +86,13 @@ RUN apt update
 # Nvidia containers
 RUN apt install -y \
         docker.io \
-        sudo apt install docker-compose-v2 \
+        docker-compose-v2 \
         libnvidia-container-tools \
         libnvidia-container1:arm64 \
         nvidia-container-toolkit-base \
         nvidia-container-toolkit \
-        nvidia-docker2
+        nvidia-docker2 \
+        mergerfs
 
 # Configure Docker file with Nvidia's parameters
 RUN nvidia-ctk runtime configure --runtime=docker
