@@ -47,7 +47,7 @@ This will create the rootfs in the `rootfs` directory.
 Next, use the following command to build the Jetson image:
 
 ```
-$ just build-jetson-image -b <board> -r <revision> -d <device>
+$ just build-jetson-image -b <board> -r <revision>
 ```
 
 > [!TIP]
@@ -57,7 +57,7 @@ $ just build-jetson-image -b <board> -r <revision> -d <device>
 For example, to build an image for `jetson-nano` board:
 
 ```bash
-$ just build-jetson-image -b jetson-nano -d SD -l 32
+$ just build-jetson-image -b jetson-nano -l 32
 ```
 
 Run with `-h` for more information
