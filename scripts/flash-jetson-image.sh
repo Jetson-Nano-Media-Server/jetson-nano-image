@@ -33,7 +33,7 @@ fi
 
 # Unmount sdcard
 if [ "$(mount | grep "$2")" ]; then
-  printf "\e[32mUnmount SD card... "
+  printf "\e[32mUnmount drive... "
   for mount_point in "$(mount | grep "$2" | awk '{ print $1}')"; do
     sudo umount "$mount_point" >/dev/null
   done
@@ -41,6 +41,6 @@ if [ "$(mount | grep "$2")" ]; then
 fi
 
 # Flash image
-printf "\e[32mFlash the sdcard... \e[0m"
+printf "\e[32mFlash the drive... \e[0m"
 dd if="$1" of="$2" bs=128M conv=fsync status=progress
 printf "\e[32mDevice ready!\n"
