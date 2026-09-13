@@ -57,7 +57,7 @@ $ just build-jetson-image -b <board> -r <revision>
 For example, to build an image for `jetson-nano` board:
 
 ```bash
-$ just build-jetson-image -b jetson-nano -l 32
+$ just build-jetson-image -b jetson-nano -r 200
 ```
 
 Run with `-h` for more information
