@@ -12,8 +12,8 @@ build-jetson-rootfs *args="": install-prerequisites
 build-jetson-image *args="":
     -@scripts/build-jetson-image.sh {{ args }}
 
-flash-jetson-image Jetson-image:
-    @scripts/flash-jetson-image.sh {{ Jetson-image }}
+flash-jetson-image Jetson-image drive:
+    @scripts/flash-jetson-image.sh {{ Jetson-image }} {{ drive }}
 
 clean:
     rm -rf base rootfs
