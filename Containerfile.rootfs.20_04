@@ -143,6 +143,14 @@ RUN useradd \
 # Create log file for the WiFi check service
 RUN touch /home/jetson/wifi_check_log.txt
 
+# Create a swapfile because this image will always run off of a SSD attached via USB
+RUN fallocate -l "4G" "/mnt/swapfile" &&
+    cd /mnt/ &&
+    chmod 600 swapfile &&
+    mkswap swapfile &&
+    swapon swapfile &&
+    sh -c 'echo "/mnt/swapfile swap swap defaults 0 0" >> /etc/fstab'
+
 # Add /usr/local/cuda/bin to the PATH
 RUN echo "if [ -d \"/usr/local/cuda/bin\" ] ; then" >> /home/jetson/.profile  && \
     echo "  PATH=\"/usr/local/cuda/bin:\$PATH\"" >> /home/jetson/.profile  && \
