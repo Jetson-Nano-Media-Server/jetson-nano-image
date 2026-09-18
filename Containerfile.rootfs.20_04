@@ -151,6 +151,9 @@ RUN fallocate -l "4G" "/mnt/swapfile" && \
     swapon swapfile && \
     sh -c 'echo "/mnt/swapfile swap swap defaults 0 0" >> /etc/fstab'
 
+# Disable the ZRAM config as we will use ZSWAP in the extlinux parameters
+RUN systemctl disable nvzramconfig
+
 # Add /usr/local/cuda/bin to the PATH
 RUN echo "if [ -d \"/usr/local/cuda/bin\" ] ; then" >> /home/jetson/.profile  && \
     echo "  PATH=\"/usr/local/cuda/bin:\$PATH\"" >> /home/jetson/.profile  && \
