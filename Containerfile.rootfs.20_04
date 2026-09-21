@@ -156,6 +156,9 @@ RUN fallocate -l "4G" "/mnt/swapfile" && \
 # Disable the ZRAM config as we will use ZSWAP in the extlinux parameters
 RUN systemctl disable nvzramconfig
 
+# Limit the number of log files from journald
+RUN sudo sed -i 's/#SystemMaxFiles=100/SystemMaxFiles=10' /etc/systemd/journald.conf
+
 # Configure and run Samba
 RUN (echo "jetson"; echo "jetson") | smbpasswd -s -a jetson
 RUN echo "[JETSON_SERVARR]\ncomment = Shared mergerfs drives\npath = /mnt/servarr\nvalid users = jetson\nbrowseable = yes\nwritable = yes\nread only = no\n#guest ok = no" >> /etc/samba/smb.conf
