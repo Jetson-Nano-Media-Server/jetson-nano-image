@@ -6,3 +6,6 @@ for file in "${FILES[@]}"
 do
    docker compose -f $file pull --ignore-pull-failures && sudo docker compose -f $file up -d
 done
+
+docker image prune -a -y
+docker system prune -a -y
