@@ -4,11 +4,14 @@ network:
   ethernets:
     eth0:
       dhcp4: true
+      dhcp4-overrides:
+        route-metric: 100 # give higher priority over wifi
 #  wifis:
 #    wlan0:
 #      dhcp4: true
 #      dhcp4-overrides:
-#        use-dns: no
+#        use-dns: no # keep this one off if you have a custom dns server
+#        route-metric: 600
 #      nameservers:
 #        addresses: [8.8.8.8,8.8.4.4]
 #      access-points:
