@@ -57,6 +57,7 @@ RUN apt install -y \
         iotop \
         isc-dhcp-client \
         iputils-ping \
+        iw \
         kmod \
         linux-firmware \
         locales \
@@ -155,6 +156,9 @@ RUN useradd \
 
 # Create log file for the WiFi check service
 RUN touch /home/jetson/wifi_check_log.txt
+
+# Disable power saving for wifi card
+RUN iw dev wlan0 set power_save off
 
 # Create a swapfile because this image will always run off of a SSD attached via USB
 RUN fallocate -l "4G" "/mnt/swapfile" && \
